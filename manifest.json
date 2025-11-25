@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "LabelMkr QR Picker",
+  "version": "0.1.0",
+  "description": "Pick page elements, turn their content into QR codes, and print Brother P-Touch labels.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LabelMkr"
+  },
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "print.html",
+        "print.css",
+        "print.js",
+        "qrcode.js",
+        "popup.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

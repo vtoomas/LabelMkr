@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>LabelMkr</title>
+  <link rel="stylesheet" href="popup.css">
+  <script src="qrcode.js"></script>
+</head>
+<body>
+  <header>
+    <div class="brand">LabelMkr</div>
+    <div class="hint">Pick selectors → Generate → Print</div>
+  </header>
+
+  <details class="controls" open>
+    <summary id="configToggle">Configuration</summary>
+    <div class="control-body">
+      <div class="block">
+        <div class="block-head">
+          <div>
+            <div class="label">QR selector</div>
+            <div class="tiny">Content used for QR codes</div>
+          </div>
+          <button id="pickQrBtn" type="button" class="ghost">Pick on page</button>
+        </div>
+        <div class="row">
+          <input id="qrSelectorInput" type="text" placeholder=".sku, [data-id], #product">
+        </div>
+        <div class="row row-source">
+          <label for="qrSourceSelect">Content source</label>
+          <select id="qrSourceSelect">
+            <option value="text">Text content</option>
+            <option value="href">Href</option>
+            <option value="src">Src</option>
+            <option value="value">Value</option>
+            <option value="data-label">data-label</option>
+            <option value="data-id">data-id</option>
+            <option value="aria-label">aria-label</option>
+            <option value="title">title</option>
+            <option value="attr">Custom attribute</option>
+          </select>
+          <input id="qrAttrInput" type="text" placeholder="data-sku" class="attr-input hidden">
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="block-head">
+          <div>
+            <div class="label">Title selector</div>
+            <div class="tiny">Shown next to QR on label</div>
+          </div>
+          <button id="pickTitleBtn" type="button" class="ghost">Pick on page</button>
+        </div>
+        <div class="row">
+          <input id="titleSelectorInput" type="text" placeholder=".name, h1, [data-title]">
+        </div>
+        <div class="row row-source">
+          <label for="titleSourceSelect">Content source</label>
+          <select id="titleSourceSelect">
+            <option value="text">Text content</option>
+            <option value="href">Href</option>
+            <option value="src">Src</option>
+            <option value="value">Value</option>
+            <option value="data-label">data-label</option>
+            <option value="data-id">data-id</option>
+            <option value="aria-label">aria-label</option>
+            <option value="title">title</option>
+            <option value="attr">Custom attribute</option>
+          </select>
+          <input id="titleAttrInput" type="text" placeholder="data-title" class="attr-input hidden">
+        </div>
+      </div>
+
+      <div class="block block-inline">
+        <div class="label">
+          Tape width
+          <select id="widthSelect">
+            <option value="12mm">12 mm</option>
+            <option value="18mm">18 mm</option>
+            <option value="24mm" selected>24 mm</option>
+            <option value="36mm">36 mm</option>
+          </select>
+        </div>
+        <button id="fetchBtn" class="primary" type="button">Fetch labels</button>
+      </div>
+    </div>
+  </details>
+
+  <section class="status">
+    <div id="statusText">Idle — pick selectors or type them manually, then fetch.</div>
+  </section>
+
+  <section class="results">
+    <div class="results__header">
+      <div>
+        <div class="label">QR selector</div>
+        <div id="qrSelectorDisplay" class="selector"></div>
+      </div>
+      <div>
+        <div class="label">Title selector</div>
+        <div id="titleSelectorDisplay" class="selector"></div>
+      </div>
+      <div class="label select-all">
+        <label><input type="checkbox" id="selectAll" checked> Select all to print</label>
+      </div>
+    </div>
+    <div id="resultList" class="result-list"></div>
+  </section>
+
+  <section class="actions">
+    <button id="printBtn" class="primary" disabled>Open print view</button>
+    <div class="tiny">Print view is sized for Brother P-Touch continuous tape (12/18/24/36 mm)</div>
+    <div class="settings-row">
+      <button id="exportBtn" type="button">Export settings (JSON)</button>
+      <button id="importBtn" type="button">Import settings</button>
+      <input id="importFile" type="file" accept="application/json" class="hidden">
+    </div>
+  </section>
+
+  <script src="popup.js"></script>
+</body>
+</html>

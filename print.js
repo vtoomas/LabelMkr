@@ -10,7 +10,14 @@ function renderLabels(items, width, meta) {
   const rotation = Number(meta?.rotation || 0);
   const titlePosition = meta?.titlePosition === "above" ? "above" : "below";
   const dpi = Number(meta?.dpi || 360);
-  const qrSize = Math.max(80, Math.round(120 * (dpi / 360)));
+  const qrSizeMmMap = {
+    "12mm": 10,
+    "18mm": 14,
+    "24mm": 18,
+    "36mm": 26,
+  };
+  const qrSizeMm = qrSizeMmMap[width] || 14;
+  const qrSizePx = Math.round((qrSizeMm / 25.4) * dpi);
 
   items.forEach((item, idx) => {
     const card = document.createElement("div");
@@ -19,10 +26,13 @@ function renderLabels(items, width, meta) {
     const inner = document.createElement("div");
     inner.className = "label__inner";
     inner.style.transform = `rotate(${rotation * -1}deg)`;
+    inner.style.transformOrigin = "center center";
 
     const qrHolder = document.createElement("div");
     qrHolder.className = "label__qr";
     qrHolder.id = `print-qr-${idx}`;
+    qrHolder.style.width = `${qrSizeMm}mm`;
+    qrHolder.style.height = `${qrSizeMm}mm`;
 
     const text = document.createElement("div");
     text.className = "label__text";
@@ -40,8 +50,8 @@ function renderLabels(items, width, meta) {
 
     new QRCode(qrHolder, {
       text: item.qrValue || "",
-      width: qrSize,
-      height: qrSize,
+      width: qrSizePx,
+      height: qrSizePx,
       correctLevel: QRCode.CorrectLevel.M,
     });
   });

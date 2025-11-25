@@ -66,6 +66,7 @@ button {
   align-items: center;
   gap: 2mm;
   transform-origin: center;
+  justify-content: center;
 }
 
 .label__qr {

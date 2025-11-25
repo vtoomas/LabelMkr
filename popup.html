@@ -83,6 +83,31 @@
         </div>
         <button id="fetchBtn" class="primary" type="button">Fetch labels</button>
       </div>
+
+      <div class="block block-inline block-print">
+        <div class="label print-options">
+          <div class="row row-source">
+            <label for="rotationSelect">Layout rotation</label>
+            <select id="rotationSelect">
+              <option value="0">0° (horizontal)</option>
+              <option value="90">90°</option>
+              <option value="180">180°</option>
+              <option value="270" selected>270° (vertical)</option>
+            </select>
+          </div>
+          <div class="row row-source">
+            <label for="titlePosSelect">Title position</label>
+            <select id="titlePosSelect">
+              <option value="below" selected>Below QR</option>
+              <option value="above">Above QR</option>
+            </select>
+          </div>
+          <div class="row row-source">
+            <label for="dpiInput">Print DPI</label>
+            <input id="dpiInput" type="number" min="150" max="1200" step="30" value="360">
+          </div>
+        </div>
+      </div>
     </div>
   </details>
 

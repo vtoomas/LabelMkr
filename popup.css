@@ -138,6 +138,15 @@ select {
   gap: 10px;
 }
 
+.block-print {
+  grid-template-columns: 1fr;
+}
+
+.print-options .row {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
 .status {
   margin: 10px 0;
   font-size: 12px;

@@ -15,6 +15,9 @@ const statusText = document.getElementById("statusText");
 const resultList = document.getElementById("resultList");
 const printBtn = document.getElementById("printBtn");
 const widthSelect = document.getElementById("widthSelect");
+const rotationSelect = document.getElementById("rotationSelect");
+const titlePosSelect = document.getElementById("titlePosSelect");
+const dpiInput = document.getElementById("dpiInput");
 const exportBtn = document.getElementById("exportBtn");
 const importBtn = document.getElementById("importBtn");
 const importFile = document.getElementById("importFile");
@@ -31,6 +34,9 @@ const state = {
   titleSource: "text",
   titleAttr: "",
   width: "24mm",
+  rotation: "270",
+  titlePosition: "below",
+  dpi: 360,
 };
 
 function setStatus(text) {
@@ -54,6 +60,9 @@ function applyStateToUI() {
   qrAttrInput.value = state.qrAttr;
   titleAttrInput.value = state.titleAttr;
   widthSelect.value = state.width;
+  rotationSelect.value = state.rotation;
+  titlePosSelect.value = state.titlePosition;
+  dpiInput.value = state.dpi;
   toggleAttrInput(qrSourceSelect, qrAttrInput);
   toggleAttrInput(titleSourceSelect, titleAttrInput);
 }
@@ -116,6 +125,9 @@ async function fetchLabels() {
     qrAttr: qrAttrInput.value.trim(),
     titleAttr: titleAttrInput.value.trim(),
     width: widthSelect.value,
+    rotation: rotationSelect.value,
+    titlePosition: titlePosSelect.value,
+    dpi: Number(dpiInput.value) || 360,
   });
   await persistSettings();
 
@@ -245,6 +257,21 @@ widthSelect.addEventListener("change", () => {
   state.width = widthSelect.value;
   persistSettings();
 });
+rotationSelect.addEventListener("change", () => {
+  state.rotation = rotationSelect.value;
+  persistSettings();
+});
+titlePosSelect.addEventListener("change", () => {
+  state.titlePosition = titlePosSelect.value;
+  persistSettings();
+});
+dpiInput.addEventListener("input", () => {
+  const val = Number(dpiInput.value);
+  if (!Number.isNaN(val)) {
+    state.dpi = val;
+    persistSettings();
+  }
+});
 
 selectAll.addEventListener("change", (e) => {
   if (e.target.checked) {
@@ -294,6 +321,9 @@ printBtn.addEventListener("click", async () => {
     qrSelector: state.qrSelector,
     titleSelector: state.titleSelector,
     width: state.width,
+    rotation: state.rotation,
+    titlePosition: state.titlePosition,
+    dpi: state.dpi,
     type: "LMKR_RESULT_DUAL",
     savedAt: Date.now(),
   };
@@ -310,6 +340,9 @@ exportBtn.addEventListener("click", async () => {
     titleSource: state.titleSource,
     titleAttr: state.titleAttr,
     width: state.width,
+    rotation: state.rotation,
+    titlePosition: state.titlePosition,
+    dpi: state.dpi,
   };
   const json = JSON.stringify(data, null, 2);
   const blob = new Blob([json], { type: "application/json" });
@@ -339,6 +372,9 @@ importFile.addEventListener("change", (e) => {
         titleSource: data.titleSource || "text",
         titleAttr: data.titleAttr || "",
         width: data.width || "24mm",
+        rotation: data.rotation || "270",
+        titlePosition: data.titlePosition || "below",
+        dpi: data.dpi || 360,
       });
       applyStateToUI();
       await persistSettings();

@@ -1,8 +1,6 @@
 /* global QRCode */
 
 const sheetEl = document.getElementById("labelSheet");
-const metaInfo = document.getElementById("metaInfo");
-const printAction = document.getElementById("printAction");
 
 function renderLabels(items, width, meta) {
   sheetEl.innerHTML = "";
@@ -11,13 +9,15 @@ function renderLabels(items, width, meta) {
   const titlePosition = meta?.titlePosition === "above" ? "above" : "below";
   const dpi = Number(meta?.dpi || 360);
   const qrSizeMmMap = {
-    "12mm": 10,
-    "18mm": 14,
-    "24mm": 18,
-    "36mm": 26,
+    "12mm": 12,
+    "18mm": 18,
+    "24mm": 24,
+    "36mm": 36,
   };
-  const qrSizeMm = qrSizeMmMap[width] || 14;
-  const qrSizePx = Math.round((qrSizeMm / 25.4) * dpi);
+  const qrSizeMm = qrSizeMmMap[width] || 18;
+  // const qrSizePx = Math.round((qrSizeMm / 25.4) * dpi);
+  const qrSizePx = Math.round((qrSizeMm / 108) * dpi);
+  console.table({ qrSizeMm, qrSizePx, dpi, width });
 
   items.forEach((item, idx) => {
     const card = document.createElement("div");
@@ -55,23 +55,20 @@ function renderLabels(items, width, meta) {
       correctLevel: QRCode.CorrectLevel.M,
     });
   });
-
-  metaInfo.textContent = `${items.length} label(s) — tape ${width} — QR selector ${meta?.qrSelector || "n/a"} — Title selector ${meta?.titleSelector || "n/a"} — Rotation ${rotation}° — DPI ${dpi}`;
 }
 
 async function loadData() {
   const data = (await chrome.storage.local.get("labelmkr_print")).labelmkr_print;
   if (!data || !data.items?.length) {
-    metaInfo.textContent = "No data to print. Go back and generate labels first.";
-    sheetEl.innerHTML = "";
+    sheetEl.innerHTML = "<div>No data to print. Go back and generate labels first.</div>";
     return;
   }
   renderLabels(data.items, data.width || "24mm", data);
-  setTimeout(() => window.print(), 300);
+  setTimeout(() => window.print(), 100);
 }
 
-printAction.addEventListener("click", () => {
-  window.print();
-});
+// window.addEventListener("afterprint", () => {
+//   self.close();
+// });
 
 loadData();
